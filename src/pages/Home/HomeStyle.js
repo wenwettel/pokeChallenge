@@ -1,13 +1,12 @@
 import styled from "styled-components";
+import Container from "../../components/Commons/Container";
 
-const HomeStyle = styled.div`
+const HomeStyle = styled(Container)`
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px 0;
-  min-height: calc(100vh - 197px);
-  
+  padding-top: 50px;
 
   h2 {
     margin-top: 50px;
@@ -46,7 +45,7 @@ const HomeStyle = styled.div`
   .contain-cards {
     margin-top: 20px;
     width: 100%;
-    max-width: 1200px;
+    
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-auto-rows: 200px;

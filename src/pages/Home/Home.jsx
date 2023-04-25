@@ -8,6 +8,7 @@ import {
 import useIntersector from "../../hooks/Intersector";
 import debounce from "just-debounce-it";
 import Dropdown from "../../components/Dropdown";
+import { Link } from "react-router-dom";
 
 function Home() {
   const elementRef = useRef();
@@ -16,7 +17,7 @@ function Home() {
     data: [],
     loading: true,
     error: false,
-    isNextPage: false
+    isNextPage: false,
   });
   const [page, setPage] = useState(0);
   const [selections, setSelections] = useState([]);
@@ -38,22 +39,22 @@ function Home() {
   );
 
   useEffect(() => {
-    if(!pokemons.loading && !pokemons.isNextPage) return 
+    if (!pokemons.loading && !pokemons.isNextPage) return;
     if (isItersecting) debounceScrollInfinitive();
   }, [debounceScrollInfinitive, isItersecting]);
 
   //abstraer el llamado de los pokemons
   useEffect(() => {
-    if(!pokemons.loading && !pokemons.isNextPage) return 
-   
+    if (!pokemons.loading && !pokemons.isNextPage) return;
+
     const getPokemons = async () => {
       try {
-        const {items, nextPage} = await axiosGetAllPokemons(page);
+        const { items, nextPage } = await axiosGetAllPokemons(page);
         setPokemos({
           data: [...pokemons.data, ...items],
           loading: false,
           error: false,
-          isNextPage: nextPage !== null 
+          isNextPage: nextPage !== null,
         });
       } catch (err) {
         console.error(err);
@@ -68,7 +69,7 @@ function Home() {
     const getTypes = async () => {
       try {
         const resTypes = await axiosGetTypesPokemons();
-        types.current = resTypes
+        types.current = resTypes;
       } catch (err) {
         console.log(err);
       }
@@ -77,7 +78,6 @@ function Home() {
   }, []);
 
   if (pokemons.loading) return "loading";
-
 
   return (
     <HomeStyle>
@@ -90,13 +90,14 @@ function Home() {
         {leakedPokemons.length ? (
           leakedPokemons?.map((pokemon) => {
             return (
-              <Card
-                key={pokemon.id}
-                name={pokemon.name}
-                number={pokemon.order}
-                image={pokemon.sprites.front_default}
-                types={pokemon.types}
-              />
+              <Link to={`pokemon/${pokemon.id}`} key={pokemon.id}>
+                <Card
+                  name={pokemon.name}
+                  number={pokemon.order}
+                  image={pokemon.sprites.front_default}
+                  types={pokemon.types}
+                />
+              </Link>
             );
           })
         ) : (
