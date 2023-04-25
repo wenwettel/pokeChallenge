@@ -9,11 +9,34 @@ export const axiosGetAllPokemons = async (page) => {
     return pokemon.url;
   });
 
-  const pokemons = await Promise.all(
+  const items = await Promise.all(
     urls.map(async (url) => {
       const res = await axios(url);
       return res.data;
     })
   );
-  return pokemons;
+
+  return { items, nextPage: resPokemons.data.next };
+};
+
+export const axiosGetTypesPokemons = async () => {
+  const resTypes = await axios("https://pokeapi.co/api/v2/type");
+
+  const urls = resTypes.data.results.map((type) => type.url);
+
+  const items = await Promise.all(
+    urls.map(async (url) => {
+      const res = await axios(url);
+      return res.data;
+    })
+  );
+
+  const filterItem = items.reduce((accum, item) => {
+    if (item.pokemon.length) {
+      return [...accum, item.name];
+    }
+    return accum;
+  }, []);
+
+  return filterItem;
 };

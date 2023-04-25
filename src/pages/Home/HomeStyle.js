@@ -52,8 +52,7 @@ const HomeStyle = styled.div`
     grid-auto-rows: 200px;
     gap: 30px;
     justify-content: center;
-    overflow-y: auto;
-    overflow-x: hidden;
+   
     
   }
 
