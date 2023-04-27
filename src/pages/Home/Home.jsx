@@ -10,11 +10,15 @@ import debounce from "just-debounce-it";
 import Dropdown from "../../components/Dropdown";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@mui/material";
+import Container from "../../components/Commons/Container";
 
 function Home() {
   const elementRef = useRef();
-  const types = useRef();
-
+  const [types, setTypes] = useState({
+    data: [],
+    loading: true,
+    error: false,
+  });
   const [pokemons, setPokemons] = useState({
     data: [],
     loading: true,
@@ -45,9 +49,9 @@ function Home() {
     if (isItersecting) debounceScrollInfinitive();
   }, [debounceScrollInfinitive, isItersecting]);
 
+  // Consulta de lista de pokemos
   useEffect(() => {
     if (!pokemons.loading && !pokemons.isNextPage) return;
-    
     const getPokemons = async () => {
       try {
         const { items, nextPage } = await axiosGetAllPokemons(page);
@@ -65,13 +69,15 @@ function Home() {
     getPokemons();
   }, [page]);
 
+  //consulta de tipos para el filtro
   useEffect(() => {
     const getTypes = async () => {
       try {
         const resTypes = await axiosGetTypesPokemons();
-        types.current = resTypes;
+        setTypes({data:resTypes, loading:false, error:false})
       } catch (err) {
         console.error(err);
+        setTypes({data:null, loading:false, error:true})
       }
     };
     getTypes();
@@ -81,19 +87,29 @@ function Home() {
     return (
       <ContainerSkeleton>
         {Array.from(new Array(20)).map((_, i) => {
-          return <Skeleton variant="rectangular" height="180px" width="200" />;
+          return <Skeleton key={i} variant="rectangular" height="180px" width="200" />;
         })}
       </ContainerSkeleton>
     );
   }
+  
+  if (pokemons.error || (!pokemons.loading && !pokemons.data.length))
+    return (
+      <Container>
+        Disculpe ocurrio un error, por favor intentelo nuevamente...
+      </Container>
+    );
 
   return (
     <HomeStyle>
-      <Dropdown
-        options={types.current}
+
+      {!types.error &&
+        <Dropdown
+        options={types.data}
         selections={selections}
         setSelections={setSelections}
       />
+      }
       <div className="contain-cards">
         {leakedPokemons.length ? (
           leakedPokemons?.map((pokemon) => {
@@ -109,7 +125,7 @@ function Home() {
             );
           })
         ) : (
-          <h4>No se encontraron resultados!</h4>
+          <h4>Buscando...</h4>
         )}
         <div ref={elementRef}></div>
       </div>

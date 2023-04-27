@@ -6,16 +6,17 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import PokemonFeatures from "../../components/PokemonFeatures";
 import AccordionPokemonDetails from "../../components/AccordionPokemonDetails";
 import SkeletonDetails from "../../components/SkeletonDetails.js/SkeletonDetails";
+import Container from "../../components/Commons/Container";
 
 function PokemonDetails() {
   const isMobile = useMediaQuery("(max-width:580px)");
-  console.log(isMobile);
   const { id } = useParams();
   const [pokemon, setPokemon] = useState({
     data: {},
     loading: true,
     error: false,
   });
+  const { details, evolutions } = pokemon?.data;
 
   useEffect(() => {
     const getPokemon = async () => {
@@ -24,14 +25,21 @@ function PokemonDetails() {
         setPokemon({ data: res, loading: false, error: false });
       } catch (error) {
         console.error(error);
+        setPokemon({ data: null, loading: false, error: true });
       }
     };
     getPokemon();
   }, [id]);
 
-  const { details, evolutions } = pokemon?.data;
-
   if (pokemon.loading) return <SkeletonDetails />;
+
+  if (pokemon.error || (!pokemon.loading && !Object.keys(pokemon.data).length)){
+    return (
+      <Container>
+        Disculpe ocurrio un error, por favor intentelo nuevamente...
+      </Container>
+    );
+  }
 
   return (
     <DetailStyle>
