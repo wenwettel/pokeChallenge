@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-const CardStyle = styled.div`
+const CardStyle = styled.div.attrs(props => ({
+  color: props.theme.colorsType[props.color] || "#732984"
+}))`
+
+ 
   text-align: center;
   box-shadow: 0px 11px 14px 2px rgba(0, 0, 0, 0.14);
   border-radius: 8px;
@@ -13,12 +17,14 @@ const CardStyle = styled.div`
   }
 
   .contain-img {
-    background-color: #f5f5f5;
-
+    background-color: ${props => props.color};
+    border-top-right-radius: 8px;
+    border-top-left-radius:8px ;
     .image {
       width: 135px;
       height: 135px;
       margin: 0 auto;
+      
     }
 
     img {

@@ -5,18 +5,14 @@ import FormControl from "@mui/material/FormControl";
 import ListItemText from "@mui/material/ListItemText";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
-import { useState } from "react";
+import {DropdownStyles} from './DropdownStyles'
 
 function Dropdown({ options, selections, setSelections }) {
-
-  
-
-  //pasar a estilos
+ 
   const MenuProps = {
     PaperProps: {
       style: {
-        maxHeight: 48 * 4.5 + 8,
-        width: 250,
+        maxHeight: 200
       },
     },
   };
@@ -27,8 +23,8 @@ function Dropdown({ options, selections, setSelections }) {
   };
 
   return (
-    <div>
-      <FormControl sx={{ m: 1, width: 500 }}>
+    <DropdownStyles>
+      <FormControl>
         <InputLabel id="drop-down-multiple-label">Pokemon Type</InputLabel>
         <Select
           labelId="drop-down-multiple-label"
@@ -40,7 +36,7 @@ function Dropdown({ options, selections, setSelections }) {
           renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}
         >
-          {options.map((option) => (
+          {options?.map((option) => (
             <MenuItem key={option} value={option}>
               <Checkbox checked={selections.indexOf(option) > -1} />
               <ListItemText primary={option} />
@@ -48,7 +44,7 @@ function Dropdown({ options, selections, setSelections }) {
           ))}
         </Select>
       </FormControl>
-    </div>
+    </DropdownStyles>
   );
 }
 

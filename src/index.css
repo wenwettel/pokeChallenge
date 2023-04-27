@@ -1,11 +1,14 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   line-height: 1.5;
+  color:'#FFFFF9';
+  background-color: #fdfdfd;
 }
 
 body {
   box-sizing: border-box;
   font-family: "Roboto", sans-serif;
+
 }
 
 *,
@@ -17,4 +20,16 @@ body {
 * {
   margin: 0;
   padding: 0;
+}
+
+ul{
+  list-style: none;
+}
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
+a:visited {
+  color:#464646ab;
 }

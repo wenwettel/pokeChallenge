@@ -1,36 +1,62 @@
-import LinearProgress from "@mui/material/LinearProgress";
-import { DetailStyle, TypeStyle } from "./DetailStyle";
-import { capitalizeFirstLetter } from "../../utils";
+import { useState, useEffect } from "react";
+import { DetailStyle } from "./DetailStyle";
 import { useParams } from "react-router-dom";
+import { axiosGetPokemonDetail } from "../../services/pokemons";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import PokemonFeatures from "../../components/PokemonFeatures";
+import AccordionPokemonDetails from "../../components/AccordionPokemonDetails";
+import SkeletonDetails from "../../components/SkeletonDetails.js/SkeletonDetails";
 
 function PokemonDetails() {
-  const {id} = useParams()
-  console.log(id)
-  const stats = [1, 2, 3, 4, 5, 6];
-  const types = ["poison", "grow"];
+  const isMobile = useMediaQuery("(max-width:580px)");
+  console.log(isMobile);
+  const { id } = useParams();
+  const [pokemon, setPokemon] = useState({
+    data: {},
+    loading: true,
+    error: false,
+  });
+
+  useEffect(() => {
+    const getPokemon = async () => {
+      try {
+        const res = await axiosGetPokemonDetail(id);
+        setPokemon({ data: res, loading: false, error: false });
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getPokemon();
+  }, [id]);
+
+  const { details, evolutions } = pokemon?.data;
+
+  if (pokemon.loading) return <SkeletonDetails />;
+
   return (
     <DetailStyle>
-      <img
-        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png"
-        alt="pokemon"
-      />
-      <div className="main-features">
-        <h1>{capitalizeFirstLetter("bulbasaur")}</h1>
-        {types.map((type) => (
-          <TypeStyle>{type}</TypeStyle>
-        ))}
-        <div>
-          {stats.map((stat) => {
-            return (
-              <div className="container-stats">
-                <p>stats</p>
-                <LinearProgress variant="determinate" value={30} />
-                <span className="percent">30%</span>
-              </div>
-            );
-          })}
-        </div>
+      {isMobile && (
+        <h1 className="title-mobile">{details?.name?.toUpperCase()}</h1>
+      )}
+      <div className="container-img-info">
+        <img
+          className="image"
+          src={details?.sprites?.other["official-artwork"]?.front_default}
+          alt="pokemon"
+        />
+        <PokemonFeatures
+          isMobile={isMobile}
+          name={details?.name}
+          types={details?.types}
+          stats={details?.stats}
+        />
       </div>
+      <AccordionPokemonDetails
+        abilities={details?.abilities}
+        evolutions={evolutions}
+        games={details?.game_indices}
+        types={details?.types}
+      />
     </DetailStyle>
   );
 }

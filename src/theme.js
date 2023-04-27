@@ -1,0 +1,27 @@
+export const theme = {
+  colorsType: {
+    grass: "#269B14",
+    poison: "#923A92",
+    water: "#2649af",
+    fire: "#ea892e",
+    flying: "#33c1ce",
+    bug: "#A8B820",
+    normal: "#7C7575",
+    fighting: "#7c7575",
+    ground: "#DBB54D",
+    rock: "#b7aaae",
+    ghost: "#644E88",
+    steel: "#A0A0C0",
+    electric: "#e2de56",
+    psychic: "#F73670",
+    ice: "#7ecaf7",
+    dragon: "#f29f60",
+    dark: "#545456",
+    fairy: "#E87890",
+  },
+  size: {
+    mobile: "580px",
+    tablet: "768px",
+    laptop: "1024px",
+  },
+};

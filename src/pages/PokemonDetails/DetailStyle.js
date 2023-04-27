@@ -1,39 +1,60 @@
-import  Container from '../../components/Commons/Container'
+import Container from "../../components/Commons/Container";
 import styled from "styled-components";
 
 const DetailStyle = styled(Container)`
+  margin-top: 50px;
 
+  h1 {
+    color: black;
+  }
+  h3 {
+    margin-top: 20px;
+  }
+
+  .container-img-info {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
 
-  .container-stats {
-    display: flex;
-    align-items: center;
-    color: #999999;
-    .percent {
-      font-size: 12px;
+    .image {
+      width: 50%;
+      height: auto;
+      object-fit: contain;
     }
-    .MuiLinearProgress-root {
-      background-color: rgb(239 255 233);
-      height: 10px;
-      width: 200px;
-      margin: 0 10px;
-      border-radius: 8px;
+  }
+
+  @media (max-width: ${(props) => props.theme.size.tablet}) {
+    h1 {
+      font-size: 30px;
     }
-    .MuiLinearProgress-barColorPrimary {
-      background-color: #19c94f;
+
+    .container-img-info {
+      margin-bottom: 30px;
+      .image {
+        width: 30%;
+      }
+    }
+  }
+
+  @media (max-width: ${(props) => props.theme.size.mobile}) {
+    margin-top: 20px;
+    h1.title-mobile {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .container-img-info {
+      .image {
+        width: 50%;
+      }
+    }
+
+    .container-img-info {
+      flex-direction: column;
     }
   }
 `;
 
-const TypeStyle = styled.div`
-  background-color: #732984;
-  display: inline-block;
-  padding: 7px 10px;
-  border-radius: 4px;
-  color:white;
-  margin: 10px 5px 10px 0;
-`;
 
-export { DetailStyle, TypeStyle };
+
+export { DetailStyle};
