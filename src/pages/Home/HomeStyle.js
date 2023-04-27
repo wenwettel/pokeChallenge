@@ -2,11 +2,9 @@ import styled from "styled-components";
 import Container from "../../components/Commons/Container";
 
 const HomeStyle = styled(Container)`
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 50px;
 
   h2 {
     margin-top: 50px;
@@ -14,7 +12,6 @@ const HomeStyle = styled(Container)`
   }
 
   a {
-    color: black;
     text-decoration: none;
   }
 
@@ -44,22 +41,25 @@ const HomeStyle = styled(Container)`
 
   .contain-cards {
     margin-top: 20px;
+    max-width: 1200px;
     width: 100%;
-    
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-auto-rows: 200px;
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
     justify-content: center;
-   
-    
   }
 
-  @media screen and (max-width: 576px) {
-    h2 {
-      text-align: center;
-    }
-  }
+  
 `;
 
-export default HomeStyle;
+const ContainerSkeleton = styled(Container)`
+ margin-top: 120px;
+    max-width: 1200px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    justify-content: center;
+`
+
+export {HomeStyle, ContainerSkeleton};

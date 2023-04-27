@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from "react";
-import HomeStyle from "./HomeStyle";
+import { HomeStyle, ContainerSkeleton } from "./HomeStyle";
 import Card from "../../components/Card/Card";
 import {
   axiosGetAllPokemons,
@@ -9,11 +9,13 @@ import useIntersector from "../../hooks/Intersector";
 import debounce from "just-debounce-it";
 import Dropdown from "../../components/Dropdown";
 import { Link } from "react-router-dom";
+import { Skeleton } from "@mui/material";
 
 function Home() {
   const elementRef = useRef();
   const types = useRef();
-  const [pokemons, setPokemos] = useState({
+
+  const [pokemons, setPokemons] = useState({
     data: [],
     loading: true,
     error: false,
@@ -43,14 +45,13 @@ function Home() {
     if (isItersecting) debounceScrollInfinitive();
   }, [debounceScrollInfinitive, isItersecting]);
 
-  //abstraer el llamado de los pokemons
   useEffect(() => {
     if (!pokemons.loading && !pokemons.isNextPage) return;
-
+    
     const getPokemons = async () => {
       try {
         const { items, nextPage } = await axiosGetAllPokemons(page);
-        setPokemos({
+        setPokemons({
           data: [...pokemons.data, ...items],
           loading: false,
           error: false,
@@ -58,26 +59,33 @@ function Home() {
         });
       } catch (err) {
         console.error(err);
-        setPokemos({ data: null, loading: false, error: true });
+        setPokemons({ data: null, loading: false, error: true });
       }
     };
     getPokemons();
   }, [page]);
 
-  //abstraer de mejor forma (traer y guardar en Redux)
   useEffect(() => {
     const getTypes = async () => {
       try {
         const resTypes = await axiosGetTypesPokemons();
         types.current = resTypes;
       } catch (err) {
-        console.log(err);
+        console.error(err);
       }
     };
     getTypes();
   }, []);
 
-  if (pokemons.loading) return "loading";
+  if (pokemons.loading) {
+    return (
+      <ContainerSkeleton>
+        {Array.from(new Array(20)).map((_, i) => {
+          return <Skeleton variant="rectangular" height="180px" width="200" />;
+        })}
+      </ContainerSkeleton>
+    );
+  }
 
   return (
     <HomeStyle>
@@ -101,7 +109,7 @@ function Home() {
             );
           })
         ) : (
-          <h1>No se encontraron resultados!</h1>
+          <h4>No se encontraron resultados!</h4>
         )}
         <div ref={elementRef}></div>
       </div>
