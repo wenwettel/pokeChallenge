@@ -7,6 +7,7 @@ import PokemonFeatures from "../../components/PokemonFeatures";
 import AccordionPokemonDetails from "../../components/AccordionPokemonDetails";
 import SkeletonDetails from '../../components/Commons/Skeletons/SkeletonDetails'
 import Container from "../../components/Commons/Container";
+import {isEmpty} from '../../utils'
 
 function PokemonDetails() {
   const isMobile = useMediaQuery("(max-width:580px)");
@@ -16,7 +17,7 @@ function PokemonDetails() {
     loading: true,
     error: false,
   });
-  const { details, evolutions } = pokemon?.data;
+  
 
   useEffect(() => {
     const getPokemon = async () => {
@@ -32,14 +33,16 @@ function PokemonDetails() {
   }, [id]);
 
   if (pokemon?.loading) return <SkeletonDetails />;
+ const { details , evolutions } = pokemon?.data || {};
 
-  if (pokemon?.error || (!pokemon?.loading && !Object.keys(pokemon?.data).length)){
+  if (pokemon?.error || isEmpty(details)){
     return (
       <Container>
         Disculpe ocurrio un error, por favor intentelo nuevamente...
       </Container>
     );
   }
+ 
 
   return (
     <DetailStyle>
@@ -63,7 +66,7 @@ function PokemonDetails() {
         abilities={details?.abilities}
         evolutions={evolutions}
         games={details?.game_indices}
-        types={details?.types}
+        type={details?.types[0].type.name}
       />
     </DetailStyle>
   );

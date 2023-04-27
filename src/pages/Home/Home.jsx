@@ -73,7 +73,7 @@ function Home() {
 
   if (pokemons?.loading) return <SkeletonHome />;
 
-  if (pokemons.error || (!pokemons.loading && !pokemons.data.length))
+  if (pokemons.error ||  !pokemons.data.length)
     return (
       <Container>
         Disculpe ocurrio un error, por favor intentelo nuevamente...

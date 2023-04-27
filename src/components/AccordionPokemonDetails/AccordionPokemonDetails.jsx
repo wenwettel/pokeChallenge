@@ -8,9 +8,9 @@ import { AccordionStyles } from "./AccordionStyles";
 import { capitalizeFirstLetter } from "../../utils";
 import Chip from "@mui/material/Chip";
 
-function AccordionPokemonDetails({ abilities, evolutions, games, types }) {
+function AccordionPokemonDetails({ abilities, evolutions, games, type }) {
   return (
-    <AccordionStyles color={types[0].type.name}>
+    <AccordionStyles color={type}>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
