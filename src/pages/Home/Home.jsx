@@ -1,24 +1,21 @@
 import { useRef, useEffect, useState, useCallback } from "react";
-import { HomeStyle, ContainerSkeleton } from "./HomeStyle";
+import { HomeStyle } from "./HomeStyle";
 import Card from "../../components/Card/Card";
-import {
-  axiosGetAllPokemons,
-  axiosGetTypesPokemons,
-} from "../../services/pokemons";
-import useIntersector from "../../hooks/Intersector";
+import { axiosGetAllPokemons } from "../../services/pokemons";
+import useIntersector from "../../hooks/useIntersector";
 import debounce from "just-debounce-it";
 import Dropdown from "../../components/Dropdown";
 import { Link } from "react-router-dom";
-import { Skeleton } from "@mui/material";
+import SkeletonHome from "../../components/Commons/Skeletons/SkeletonHome";
 import Container from "../../components/Commons/Container";
+import { useDispatch, useSelector } from "react-redux";
+import { getTypes } from "../../store/slices/types";
 
 function Home() {
   const elementRef = useRef();
-  const [types, setTypes] = useState({
-    data: [],
-    loading: true,
-    error: false,
-  });
+  const dispatch = useDispatch();
+  const types = useSelector((state) => state.types);
+
   const [pokemons, setPokemons] = useState({
     data: [],
     loading: true,
@@ -31,12 +28,12 @@ function Home() {
 
   /*Filtro */
   const leakedPokemons = selections.length
-    ? pokemons.data.filter((pokemon) => {
+    ? pokemons?.data?.filter((pokemon) => {
         return pokemon.types.some((type) =>
           selections.includes(type.type.name)
         );
       })
-    : pokemons.data;
+    : pokemons?.data;
 
   /*Se usa debounce para controlar que el cambio de pagina suceda en el momento que corresponde */
   const debounceScrollInfinitive = useCallback(
@@ -45,18 +42,18 @@ function Home() {
   );
 
   useEffect(() => {
-    if (!pokemons.loading && !pokemons.isNextPage) return;
+    if (!pokemons?.loading && !pokemons?.isNextPage) return;
     if (isItersecting) debounceScrollInfinitive();
   }, [debounceScrollInfinitive, isItersecting]);
 
   // Consulta de lista de pokemos
   useEffect(() => {
-    if (!pokemons.loading && !pokemons.isNextPage) return;
+    if (!pokemons?.loading && !pokemons?.isNextPage) return;
     const getPokemons = async () => {
       try {
         const { items, nextPage } = await axiosGetAllPokemons(page);
         setPokemons({
-          data: [...pokemons.data, ...items],
+          data: [...pokemons?.data, ...items],
           loading: false,
           error: false,
           isNextPage: nextPage !== null,
@@ -71,28 +68,11 @@ function Home() {
 
   //consulta de tipos para el filtro
   useEffect(() => {
-    const getTypes = async () => {
-      try {
-        const resTypes = await axiosGetTypesPokemons();
-        setTypes({data:resTypes, loading:false, error:false})
-      } catch (err) {
-        console.error(err);
-        setTypes({data:null, loading:false, error:true})
-      }
-    };
-    getTypes();
+    dispatch(getTypes());
   }, []);
 
-  if (pokemons.loading) {
-    return (
-      <ContainerSkeleton>
-        {Array.from(new Array(20)).map((_, i) => {
-          return <Skeleton key={i} variant="rectangular" height="180px" width="200" />;
-        })}
-      </ContainerSkeleton>
-    );
-  }
-  
+  if (pokemons?.loading) return <SkeletonHome />;
+
   if (pokemons.error || (!pokemons.loading && !pokemons.data.length))
     return (
       <Container>
@@ -102,16 +82,15 @@ function Home() {
 
   return (
     <HomeStyle>
-
-      {!types.error &&
+      {!types?.error && (
         <Dropdown
-        options={types.data}
-        selections={selections}
-        setSelections={setSelections}
-      />
-      }
+          options={types.data}
+          selections={selections}
+          setSelections={setSelections}
+        />
+      )}
       <div className="contain-cards">
-        {leakedPokemons.length ? (
+        {leakedPokemons?.length ? (
           leakedPokemons?.map((pokemon) => {
             return (
               <Link to={`pokemon/${pokemon.id}`} key={pokemon.id}>
