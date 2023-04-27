@@ -5,7 +5,7 @@ import { axiosGetPokemonDetail } from "../../services/pokemons";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import PokemonFeatures from "../../components/PokemonFeatures";
 import AccordionPokemonDetails from "../../components/AccordionPokemonDetails";
-import SkeletonDetails from "../../components/SkeletonDetails.js/SkeletonDetails";
+import SkeletonDetails from '../../components/Commons/Skeletons/SkeletonDetails'
 import Container from "../../components/Commons/Container";
 
 function PokemonDetails() {
@@ -31,9 +31,9 @@ function PokemonDetails() {
     getPokemon();
   }, [id]);
 
-  if (pokemon.loading) return <SkeletonDetails />;
+  if (pokemon?.loading) return <SkeletonDetails />;
 
-  if (pokemon.error || (!pokemon.loading && !Object.keys(pokemon.data).length)){
+  if (pokemon?.error || (!pokemon?.loading && !Object.keys(pokemon?.data).length)){
     return (
       <Container>
         Disculpe ocurrio un error, por favor intentelo nuevamente...

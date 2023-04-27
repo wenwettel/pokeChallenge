@@ -1,9 +1,7 @@
 import LineProgress from "../../components/Commons/LineProgress";
 import { TypeStyle, FeatureStyles } from "./FeatureStyles";
 
-
 function PokemonFeatures({ name, types, stats, isMobile }) {
- 
   return (
     <FeatureStyles>
       {!isMobile && <h1>{name?.toUpperCase()}</h1>}

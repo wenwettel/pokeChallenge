@@ -20,7 +20,8 @@ export function getEvolutions(evolutionChain) {
   ];
 }
 
-/*Para la linea de evolucion de un pokemon es la misma ruta (id), en consecuenta trae las mismas evoluciones siempre, 
+/*Para la linea de evolucion de un pokemon es la misma ruta (id), 
+en consecuenta trae las mismas evoluciones siempre, 
 esta funcion filra para que solo se muestra la siguiente evolucion que corresponde*/
 
 export function filterEvolutions(chain, namePokemon) {
@@ -35,3 +36,4 @@ export function filterEvolutions(chain, namePokemon) {
 
   return listEvolutions;
 }
+
