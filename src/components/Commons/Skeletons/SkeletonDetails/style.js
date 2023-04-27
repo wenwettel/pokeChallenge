@@ -2,7 +2,7 @@ import Container from "../../Container";
 import styled from "styled-components";
 
 const ContainerSkeleton = styled(Container)`
-  margin-top: 80px;
+  margin-top: 150px;
   .flex {
     max-width: 100%;
     display: flex;

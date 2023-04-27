@@ -2,8 +2,6 @@ import Container from "../../components/Commons/Container";
 import styled from "styled-components";
 
 const DetailStyle = styled(Container)`
-  margin-top: 50px;
-
   h1 {
     color: black;
   }
@@ -37,7 +35,7 @@ const DetailStyle = styled(Container)`
   }
 
   @media (max-width: ${(props) => props.theme.size.mobile}) {
-    margin-top: 20px;
+    padding-top: 15px;
     h1.title-mobile {
       text-align: center;
       margin-bottom: 10px;

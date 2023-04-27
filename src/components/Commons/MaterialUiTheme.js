@@ -14,7 +14,7 @@ export const MaterialUiTheme = createTheme({
       rock: { main: "#b7aaae" },
       ghost: { main: "#644E88" },
       steel: { main: "#A0A0C0" },
-      electric: { main: "#69C23D" },
+      electric: { main: "#E2DE56" },
       psychic: { main: "#F73670" },
       ice: { main: "#7ecaf7" },
       dragon: { main: "#f29f60" },
